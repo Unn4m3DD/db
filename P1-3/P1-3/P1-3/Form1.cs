@@ -3,6 +3,8 @@ using System.Data;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using Microsoft.VisualBasic;
+//tcp:mednat.ieeta.pt\SQLSERVER,8101
+//p2g1
 namespace P1_3 {
   public partial class Form1 : Form {
     SqlConnection CN;
@@ -46,6 +48,7 @@ namespace P1_3 {
             str += "\n";
             cnt += 1;
           }
+          _ = MessageBox.Show(str);
         }
       } catch (Exception ex) {
         MessageBox.Show("FAILED TO OPEN CONNECTION TO DATABASE DUE TO THE FOLLOWING ERROR \r\n" + ex.Message, "Connection Error", MessageBoxButtons.OK);
@@ -61,7 +64,9 @@ namespace P1_3 {
 
 
     private void attempt_button_Click(object sender, EventArgs e) {
-      TestDBConnection(server_textbox.Text, server_textbox.Text, user_textbox.Text, password_textbox.Text);
+      Console.WriteLine("asd");
+      TestDBConnection(server_textbox.Text, user_textbox.Text, user_textbox.Text, password_textbox.Text);
+      Console.WriteLine("asd");
     }
 
     private void hello_button_Click(object sender, EventArgs e) {
