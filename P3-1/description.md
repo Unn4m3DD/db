@@ -1,4 +1,5 @@
-# a) r(R)
+ver https://github.com/Unn4m3DD/db/blob/master/P3-1/description.md
+# a)
 **Client**(nif, name, address, license_number)
 
 **Rental**(id, duration, date, client_nif, counter_id, object_plate)
