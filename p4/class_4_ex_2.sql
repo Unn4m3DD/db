@@ -8,7 +8,7 @@ create table class_4_ex_2.Airport(
 );
 create table class_4_ex_2.Airplane(
     ID primary key INT,
-    type foreign key references class_4_ex_2.AirplaneType string not null,
+    type foreign key references class_4_ex_2.AirplaneType(tyoe_name) string not null,
     total_seats INT not null
 );
 
@@ -20,35 +20,35 @@ create table class_4_ex_2.AirplaneType(
 
 create table class_4_ex_2.FlightLeg(
     ID primary key INT,
-    flight_ID primary key foreign references class_4_ex_2.Flight key INT,
-    departure_airport_ID INT foreign key references class_4_ex_2.Airport not null,
-    arrival_airport_ID INT foreign key references class_4_ex_2.Airport not null,
+    flight_ID primary key foreign references class_4_ex_2.Flight(ID) key INT,
+    departure_airport_ID INT foreign key references class_4_ex_2.Airport(ID) not null,
+    arrival_airport_ID INT foreign key references class_4_ex_2.Airport(ID) not null,
     departure_time INT not null,
     arrival_time INT not null
 );
 
 create table class_4_ex_2.LegInstance(
-    flight_ID primary key foreign references class4_ex_2.FlightLeg key INT,
-    leg_ID primary key foreign key references class4_ex_2.FlightLeg INT,
+    flight_ID primary key foreign references class4_ex_2.FlightLeg(flight_ID) key INT,
+    leg_ID primary key foreign key references class4_ex_2.FlightLeg(ID) INT,
     leg_date primary key DATE,
     available_seats INT not null,
     airplane_ID foreign key INT not null,
-    departure_airport_ID INT foreign key references class4_ex_2.Airport not null,
-    arrival_airport_ID INT foreign key references class4_ex_2.Airport not null,
+    departure_airport_ID INT foreign key references class4_ex_2.Airport(ID) not null,
+    arrival_airport_ID INT foreign key references class4_ex_2.Airport(ID) not null,
     departure_time INT not null,
     arrival_time INT not null
 );
 
 create table class_4_ex_2.Seat(
     seat_ID primary key INT,
-    flight_ID primary key foreign key references class4_ex_2.LegInstance INT,
-    leg_ID primary key foreign key references class4_ex_2.LegInstance INT,
-    leg_date primary key foreign key references class4_ex_2.LegInstance DATE,
+    flight_ID primary key foreign key references class4_ex_2.LegInstance(flight_ID) INT,
+    leg_ID primary key foreign key references class4_ex_2.LegInstance(ID) INT,
+    leg_date primary key foreign key references class4_ex_2.LegInstance(leg_date) DATE,
 );
 
 create table class_4_ex_2.Fare(
     ID primary key INT,
-    flight_ID primary key foreign key references class4_ex_2.Flight INT,
+    flight_ID primary key foreign key references class4_ex_2.Flight(ID) INT,
     amount INT not null,
     restrictions string not null,
 );
@@ -60,6 +60,6 @@ create table class_4_ex_2.Flight(
 );
 
 create table class_4_ex_2.CanLand(
-    airport_ID primary key foreign key references class4_ex_2.Airport INT,
-    airplane_ID primary key foreign key references class4_ex_2.Airport INT
+    airport_ID primary key foreign key references class4_ex_2.Airport(ID) INT,
+    airplane_ID primary key foreign key references class4_ex_2.Airport(ID) INT
 );
