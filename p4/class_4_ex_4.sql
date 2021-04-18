@@ -72,3 +72,11 @@ create table class_4_ex_4.SoldBy (
     pharmacy_nif INT foreign key references class_4_ex_4.Pharmacy(nif) not null,
     primary key(drug_ID, pharmacy_nif)
 );
+
+GO
+;
+create table class_4_ex_4.SellsTo (
+    pharmacy_nif INT foreign key references class_4_ex_4.Pharmacy(nif) not null,
+	patient_ID INT foreign key references class_4_ex_4.Patient(ID) not null,
+    primary key(patient_ID, pharmacy_nif)
+)

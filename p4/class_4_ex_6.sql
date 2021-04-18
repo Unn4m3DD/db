@@ -68,3 +68,10 @@ create table class_4_ex_6.OptIn (
 );
 GO
 ;
+create table class_4_ex_6.CanPickup (
+    authorized_id INT foreign key references class_4_ex_6.Authorized(person_cc) not null,
+    student_id INT foreign key references class_4_ex_6.Student(id) not null,
+    primary key(authorized_id, student_id)
+);
+GO
+;
