@@ -3,7 +3,7 @@ GO
 ;
 create table class_4_ex_2.AirplaneType(
     [type_name] VARCHAR(256) primary key not null,
-    company VARCHAR(id) not null,
+    company VARCHAR(256) not null,
     max_seats INT not null
 )
 GO
@@ -38,13 +38,13 @@ create table class_4_ex_2.FlightLeg(
     arrival_airport_id INT foreign key references class_4_ex_2.Airport(id) not null,
     departure_time INT not null,
     arrival_time INT not null,
-    primary key(leg_id, flight_id)
+    primary key(flight_id, leg_id)
 )
 GO
 ;
 create table class_4_ex_2.LegInstance(
-    flight_id INT,
-    leg_id INT,
+    flight_id INT not null,
+    leg_id INT not null,
     leg_date DATE not null,
     available_seats INT not null,
     airplane_id INT foreign key references class_4_ex_2.Airplane(id) not null,
@@ -58,7 +58,7 @@ create table class_4_ex_2.LegInstance(
 GO
 ;
 create table class_4_ex_2.Seat(
-    seat_id INT identity(1, 1) primary key,
+    seat_id INT identity(1, 1),
     flight_id INT,
     leg_id INT,
     leg_date DATE,
