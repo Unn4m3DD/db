@@ -46,6 +46,13 @@ create table class_4_ex_6.Authorized (
 );
 GO
 ;
+create table class_4_ex_6.CanPickup (
+    authorized_id INT foreign key references class_4_ex_6.Authorized(person_cc) not null,
+    student_id INT foreign key references class_4_ex_6.Student(id) not null,
+    primary key(authorized_id, student_id)
+);
+GO
+;
 create table class_4_ex_6.Activity (
     id INT primary key not null,
     activity_name VARCHAR(256) not null,
