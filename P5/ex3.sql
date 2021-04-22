@@ -1,92 +1,161 @@
 --3.a)
--- σ prescricao.numUtente = null (paciente ⟗ paciente.numUtente = prescricao.numUtente (prescricao))
-select *
-from paciente
-    full outer join prescricao on paciente.numUtente = prescricao.numUtente
-where prescricao.numUtente is null;
 /*
- paciente.numUtente	paciente.nome	    paciente.dataNasc	    paciente.endereco	prescricao.numPresc	prescricao.numUtente	prescricao.numMedico	prescricao.farmacia	prescricao.dataProc
- 2	                Paula Vasco Silva	1972-010-30         	Rua Direita         43	                null	                null	                null	            null
+ π numUtente, nome 
+ (
+ paciente ▷
+ π numUtente (prescricao)
+ )
+ 
+ paciente.numUtente	paciente.nome
+ 2	Paula Vasco Silva
  */
+select
+  *
+from
+  paciente full
+  outer join prescricao on paciente.numUtente = prescricao.numUtente
+where
+  prescricao.numUtente is null;
+
 --3.b)
--- (medico ⟕ numMedico = numSNS ρ prescCount π numMedico, num γ numMedico; COUNT(*)→num (prescricao))
-select *
-from medico
-    left join (
-        select numMedico,
-            count(*) as num
-        from prescricao
-        group by numMedico
-    ) as prescCount on numMedico = numSNS;
-/*
- medico.numSNS	medico.nome	        medico.especialidade	prescCount.numMedico	prescCount.num
- 101	            Joao Pires Lima     Cardiologia	            101	                    1
- 102	            Manuel Jose Rosa    Cardiologia	            102	                    4
- 103	            Rui Luis Caraca     Pneumologia	            103	                    2
- 104	            Sofia Sousa Silva   Radiologia	            null                    null
- 105	            Ana Barbosa	        Neurologia              105	                    2
+/* 
+ γ especialidade; count(especialidade)->especialidade_count (prescricao ⨝ numSNS = numMedico medico)
+ 
+ medico.especialidade	especialidade_count
+ Neurologia	2
+ Cardiologia	5
+ Pneumologia	2
  */
+select
+  especialidade,
+  count(especialidade) as cnt
+from
+  prescricao
+  inner join medico on numSNS = numMedico
+group by
+  especialidade;
+
 --3.c)
---(farmacia ⟕ nome = prescCount.farmacia ρ prescCount π farmacia, num γ farmacia; COUNT(*)→num (prescricao))
-select *
-from farmacia
-    left join (
-        select farmacia,
-            count(*) as num
-        from prescricao
-        group by farmacia
-    ) as prescCount on nome = prescCount.farmacia;
 /*
- farmacia.nome	    farmacia.telefone	farmacia.endereco	       prescCount.farmacia	prescCount.num
- Farmacia BelaVista	221234567	        Avenida Principal 973	   Farmacia BelaVista	1
- Farmacia Central	234370500	        Avenida da Liberdade 33	   Farmacia Central	    4
- Farmacia Peixoto	234375111	        Largo da Vila 523	       Farmacia Peixoto	    1
- Farmacia Vitalis	229876543	        Rua Visconde Salgado 263   Farmacia Vitalis	    1
+ γ farmacia.nome; count(nome)->perscription_count (farmacia ⨝ farmacia=nome prescricao)
+ 
+ farmacia.nome	perscription_count
+ Farmacia BelaVista	1
+ Farmacia Central	4
+ Farmacia Peixoto	1
+ Farmacia Vitalis	1
  */
+select
+  nome,
+  count(nome) as perscription_count
+from
+  farmacia
+  inner join prescricao on nome = farmacia
+group by
+  nome;
+
 --3.d)
--- π farmaco.numRegFarm, nome σ farmaco.numRegFarm = 906 and presc.numRegFarm ≠ 906 
--- (farmaco ⟕ presc.nomeFarmaco = nome ρ presc π numRegFarm, nomeFarmaco (presc_farmaco))
-select farmaco.numRegFarm,
-    nome
-from farmaco
-    left join (
-        select numRegFarm,
-            nomeFarmaco
-        from presc_farmaco
-    ) as presc on presc.nomeFarmaco = nome
-where farmaco.numRegFarm = 906
-    and presc.numRegFarm != 906;
 /*
- farmaco.numRegFarm	farmaco.nome
- 906	                Gucolan 1000
+ π farmaco.nome, formula
+ (σ numPresc = null (
+ presc_farmaco ⟖ nomeFarmaco = farmaco.nome
+ (farmaco ⨝ numReg = numRegFarm (σ numReg=906 (farmaceutica)))
+ ))
+ 
+ farmaco.nome	farmaco.formula
+ Gucolan 1000	VFR-750
+ */
+select
+  farmaco.nome,
+  formula
+from
+  farmaco
+  inner join (
+    select
+      *
+    from
+      farmaceutica
+    where
+      numReg = 906
+  ) as f906 on numReg = numRegFarm
+  left join presc_farmaco on nomeFarmaco = farmaco.nome
+where
+  numPresc is null;
+
+/*
  */
 --3.e)
--- π prescricao.farmacia, numReg, farmaceu.soma σ prescricao.farmacia ≠ null 
--- (prescricao ⟕ presc_farmaco.numPresc = prescricao.numPresc 
--- (presc_farmaco ⟕ farmaceu.numReg = presc_farmaco.numRegFarm ρ farmaceu π numReg, soma γ numReg; COUNT(numReg)→soma (farmaceutica)))
-select prescricao.farmacia,
-    numReg,
-    farmaceu.soma
-from prescricao
-    left join presc_farmaco on presc_farmaco.numPresc = prescricao.numPresc
-    left join (
-        select numReg,
-            count(numReg) as soma
-        from farmaceutica
-        group by numReg
-    ) as farmaceu on farmaceu.numReg = presc_farmaco.numRegFarm
-where prescricao.farmacia is not null;
 /*
-prescricao.farmacia	  farmaceu.numReg	farmaceu.soma
-Farmacia Central	  905	            1
-Farmacia Central	  906	            1
-Farmacia Central	  908	            1
-Farmacia BelaVista	  905	            1
-Farmacia BelaVista	  908	            1
-Farmacia Vitalis	  905	            1
-Farmacia Vitalis	  906	            1
-Farmacia Vitalis	  908	            1
-Farmacia Peixoto	  905	            1
-Farmacia Peixoto	  906	            1
-Farmacia Peixoto	  908	            1
-*/
+ γ numRegFarm, farmacia.nome, nomeFarmaco; count(*)->farmaco_count (farmacia ⨝ prescricao ⨝  presc_farmaco ⨝ numRegFarm = numReg farmaceutica)
+ 
+ presc_farmaco.numRegFarm	farmacia.nome	presc_farmaco.nomeFarmaco	farmaco_count
+ 905	Farmacia BelaVista	Boa Saude em 3 Dias	5
+ 907	Farmacia BelaVista	GEROaero Rapid	1
+ 906	Farmacia BelaVista	Voltaren Spray	5
+ 906	Farmacia BelaVista	Xelopironi 350	2
+ 908	Farmacia BelaVista	Aspirina 1000	5
+ 905	Farmacia Central	Boa Saude em 3 Dias	5
+ 907	Farmacia Central	GEROaero Rapid	1
+ 906	Farmacia Central	Voltaren Spray	5
+ 906	Farmacia Central	Xelopironi 350	2
+ 908	Farmacia Central	Aspirina 1000	5
+ 905	Farmacia Peixoto	Boa Saude em 3 Dias	5
+ 907	Farmacia Peixoto	GEROaero Rapid	1
+ 906	Farmacia Peixoto	Voltaren Spray	5
+ 906	Farmacia Peixoto	Xelopironi 350	2
+ 908	Farmacia Peixoto	Aspirina 1000	5
+ 905	Farmacia Vitalis	Boa Saude em 3 Dias	5
+ 907	Farmacia Vitalis	GEROaero Rapid	1
+ 906	Farmacia Vitalis	Voltaren Spray	5
+ 906	Farmacia Vitalis	Xelopironi 350	2
+ 908	Farmacia Vitalis	Aspirina 1000	5
+ */
+select
+  numRegFarm,
+  farmacia.nome,
+  nomeFarmaco,
+  count(*) as farmaco_count
+from
+  farmacia
+  inner join prescricao natural
+  inner join presc_farmaco natural
+  inner join farmaceutica on numRegFarm = numReg
+group by
+  numRegFarm,
+  farmacia.nome,
+  nomeFarmaco;
+
+-- f)
+/*
+ π tmp.nome, tmp.numUtente (
+ σ m_min ≠ m_max 
+ ρ tmp 
+ π paciente.numUtente, paciente.nome, m_min, m_max 
+ γ paciente.numUtente, paciente.nome;	 
+ MAX(prescricao.numMedico)→m_min, 
+ MIN(prescricao.numMedico)→m_max 
+ (paciente ⨝ paciente.numUtente = prescricao.numUtente (prescricao))
+ )
+ tmp.nome	tmp.numUtente
+ Renato Manuel Cavaco	1
+ Ines Couto Souto	3
+ */
+select
+  tmp.nome,
+  tmp.numUtente
+from
+  (
+    select
+      paciente.numUtente,
+      paciente.nome,
+      max(prescricao.numMedico) as m_min,
+      min(prescricao.numMedico) as m_max
+    from
+      paciente
+      inner join prescricao on paciente.numUtente = prescricao.numUtente
+    group by
+      paciente.numUtente,
+      paciente.nome
+  ) as tmp
+where
+  m_min != m_max;
