@@ -9,13 +9,13 @@ CAM (Cooperative Awareness Messages)
     tipo de veiculo e id do emissor
 
 VAM (VRU(Vulnerable Road User) Awareness Message) 
-  - Enviadas por um smartphone(\*), contem a posição, tipo de veiculo e id do emissor
+  - Enviadas por um smartphone(*), contem a posição, tipo de veiculo e id do emissor
 
 DENM - (Decentralized Environmental Notification Message)
-  - Enviadas por smartphones (\*) ou website (\*), contem o id do emissor,
+  - Enviadas por smartphones (*) ou website (*), contem o id do emissor,
     uma causa e uma sub-causa do evento
 
-Perceived Object (\*)
+Perceived Object (*)
   - Parte de uma CPM, contem um id do objeto, a distancia à RSU em metros e a
     velocidade do objeto.
 
