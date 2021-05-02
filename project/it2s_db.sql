@@ -20,7 +20,7 @@ GO
 
 create table it2s_db.App(
     emitter_station_id int foreign key references it2s_db.Emitter(station_id) not null,
-    configured_language int not null,
+    configured_language char(2) check( configured_language in ('pt', 'en')) not null,
     primary key(emitter_station_id)
 )
 GO
@@ -54,6 +54,7 @@ create table it2s_db.CPM(
     event_timestamp int not null,
     longitude int not null, 
     latitude int not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
     primary key(rsu_station_id, event_timestamp)
 )
 GO
@@ -65,6 +66,7 @@ create table it2s_db.PerceivedObject(
 	perceived_object_id int not null,
     longitude int not null, 
     latitude int not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
     x_distance int not null,
     y_distance int not null,
     x_speed int not null,
@@ -95,6 +97,7 @@ create table it2s_db.CAM(
     speed int not null,
     latitude int not null,
     longitude int not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null, -- check limite quadtree zoom 18
     primary key(station_id, event_timestamp)
 )
 GO
@@ -105,6 +108,7 @@ create table it2s_db.VAM(
     station_type int not null,
     latitude int not null,
     longitude int not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
     emitter_station_id int foreign key references it2s_db.SmartPhone(emitter_station_id),
     primary key(emitter_station_id, event_timestamp)
 )
@@ -116,6 +120,10 @@ create table it2s_db.DENM(
     event_timestamp int not null,
     cause_code int not null,
     sub_cause_code int not null,
+    latitude int not null,
+    longitude int not null,
+    duration int,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
     primary key(emitter_station_id, event_timestamp)
 )
 GO

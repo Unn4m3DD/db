@@ -41,3 +41,5 @@ drop table it2s_db.Emitter;
 GO
 ;
 drop schema it2s_db;
+GO
+;
