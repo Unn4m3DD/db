@@ -33,4 +33,10 @@ group by [type]
 having avg(advance) is not null
 ) as temp on titles.type = temp.type and titles.advance >= temp.average * 1.5 
 
--- o)
+-- o) falta acabar
+select distinct title, avg(price * ytd_sales) as faturacao, avg(ytd_sales * royaltyper) as auths_revenue from titles
+join titleauthor on titles.title_id = titleauthor.title_id
+where ytd_sales is not null
+group by titles.title_id, title 
+order by title
+
