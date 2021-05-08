@@ -1,31 +1,35 @@
-declare @avg_books_per_store as int;
+declare @avg_book_count int;
 
 set
-  @avg_books_per_store = (
+  @avg_book_count = (
     select
-      avg(book_count)
+      AVG(sold_book_count)
     from
       (
         select
-          st.stor_name,
-          sum(sl.qty) as book_count
+          sum(qty) as sold_book_count
         from
-          stores as st
-          inner join sales as sl on st.stor_id = sl.stor_id
+          stores
+          inner join sales on sales.stor_id = stores.stor_id
         group by
-          st.stor_id,
-          st.stor_name
-      ) as books_per_store
-  );
-
+          stores.stor_id,
+          stores.stor_name
+      ) as store_sold_book_count
+  )
 select
-  st.stor_name,
-  sum(sl.qty) as book_count
+  stores.stor_name,
+  sum(qty) as sold_book_count
 from
-  stores as st
-  inner join sales as sl on st.stor_id = sl.stor_id
+  stores
+  inner join sales on sales.stor_id = stores.stor_id
 group by
-  st.stor_id,
-  st.stor_name
+  stores.stor_id,
+  stores.stor_name
 having
-  sum(sl.qty) > @avg_books_per_store;
+  sum(qty) > @avg_book_count;
+
+/*
+ Barnum's	125
+ News & Brews	90
+ Doc-U-Mat: Quality Laundry and Books	130
+ */

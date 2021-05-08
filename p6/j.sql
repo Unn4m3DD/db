@@ -1,15 +1,15 @@
 select
-  tt.title
+  titles.title
 from
-  stores as st
-  inner join sales as sl on st.stor_id = sl.stor_id
-  inner join titles tt on tt.title_id = sl.title_id
+  stores
+  inner join sales on sales.stor_id = stores.stor_id
+  inner join titles on titles.title_id = sales.title_id
 where
-  st.stor_id = (
-    select
-      stor_id
-    from
-      stores
-    where
-      stor_name = 'Bookbeat'
-  );
+  stores.stor_name = 'Bookbeat';
+
+/*
+ The Gourmet Microwave
+ The Busy Executive's Database Guide
+ Cooking with Computers: Surreptitious Balance Sheets
+ But Is It User Friendly?
+ */

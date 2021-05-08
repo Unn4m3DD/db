@@ -1,11 +1,17 @@
 select
-  p.pub_id,
-  p.pub_name,
-  sum(s.qty)
+  publishers.pub_id,
+  publishers.pub_name,
+  sum(qty) as quantity
 from
-  publishers as p
-  inner join titles as t on p.pub_id = t.pub_id
-  inner join sales as s on s.title_id = t.title_id
+  sales
+  inner join titles on sales.title_id = titles.title_id
+  inner join publishers on publishers.pub_id = titles.pub_id
 group by
-  p.pub_id,
-  p.pub_name;
+  publishers.pub_id,
+  publishers.pub_name;
+
+/*
+ 0736	New Moon Books	208
+ 0877	Binnet & Hardley	150
+ 1389	Algodata Infosystems	135
+ */

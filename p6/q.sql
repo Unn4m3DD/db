@@ -1,31 +1,23 @@
-declare @avg_books_per_store as int;
+declare @book_count int;
 
 set
-  @avg_books_per_store = (
+  @book_count = (
     select
-      avg(book_count)
+      count(*)
     from
-      (
-        select
-          st.stor_name,
-          sum(sl.qty) as book_count
-        from
-          stores as st
-          inner join sales as sl on st.stor_id = sl.stor_id
-        group by
-          st.stor_id,
-          st.stor_name
-      ) as books_per_store
-  );
-
+      titles
+  )
 select
-  st.stor_name,
-  sum(sl.qty) as book_count
+  stores.stor_name
 from
-  stores as st
-  inner join sales as sl on st.stor_id = sl.stor_id
+  stores
+  inner join sales on sales.stor_id = stores.stor_id
 group by
-  st.stor_id,
-  st.stor_name
+  stores.stor_id,
+  stores.stor_name
 having
-  sum(sl.qty) > @avg_books_per_store;
+  count(distinct title_id) = @book_count;
+
+/*
+ 
+ */
