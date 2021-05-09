@@ -1,13 +1,21 @@
 select
   authors.au_fname,
-  count(titles.[type])
+  authors.au_lname,
+  count(distinct titles.[type])
 from
   authors
-  join titleauthor on authors.au_id = titleauthor.au_id
-  join titles on titleauthor.title_id = titles.title_id
+  inner join titleauthor on authors.au_id = titleauthor.au_id
+  inner join titles on titles.title_id = titleauthor.title_id
 group by
-  authors.au_fname
+  authors.au_id,
+  authors.au_fname,
+  authors.au_lname
 having
-  count(titles.[type]) > 1
-order by
-  authors.au_fname;
+  count(distinct titles.[type]) > 1;
+
+/*
+ Michael	O'Leary	2
+ Charlene	Locksley	2
+ Stearns	MacFeather	2
+ Anne	Ringer	2
+ */
