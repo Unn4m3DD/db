@@ -44,6 +44,8 @@ GO
 
 create table it2s_db.RSU(
     emitter_station_id int foreign key references it2s_db.Emitter(station_id) not null,
+    latitude int not null,
+    longitude int not null,
     primary key(emitter_station_id)
 )
 GO
