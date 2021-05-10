@@ -32,6 +32,8 @@ create table it2s_db.WebSite(
 );
 create table it2s_db.RSU(
   emitter_station_id int not null,
+  latitude int not null,
+  longitude int not null,
   primary key(emitter_station_id),
   foreign key (emitter_station_id) references it2s_db.Emitter(station_id)
 );
