@@ -1,4 +1,4 @@
-create schema it2s_db;
+create database it2s_db;
 use databse it2s_db;
 create table it2s_db.Emitter(
   station_id int not null,
