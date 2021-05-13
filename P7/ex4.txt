@@ -1,0 +1,29 @@
+Considere a relação 
+R = { A, B, C, D, E }
+A, B, C, D, E
+|--|--^--^--^
+|-----^
+      |--^
+
+A, B -> C, D, E
+A -> C
+C -> D
+
+a) A, B
+
+b) 
+2FN
+R = { A, B, C, D, E }
+
+c)
+3FN
+R = { A, B, C, D, E }
+
+d)
+BCNF
+R1 = { A, B, E }
+R2 = { A, C }
+R3 = { C, D }
+||
+R1 = { A, B, E }
+R2 = { A, D }
