@@ -1,0 +1,13 @@
+a) chaves = { A, B }
+
+b)
+    R1( A, B, C )
+    R2( A, D, E, I, J ) 
+    R3( B, F, G, H )
+
+c)
+    R1( A, B, C )
+    R2( A, D, E )  
+    R3( D, I, J)
+    R4( B, F )
+    R5( F, G, H )

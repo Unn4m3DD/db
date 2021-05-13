@@ -1,0 +1,51 @@
+a) 
+i.
+create view book_author as
+select title, (au_fname + ' ' + au_lname) as author_name from titles
+join titleauthor on titles.title_id = titleauthor.title_id
+join authors on authors.au_id = titleauthor.au_id
+
+ii.
+create view editor_employees as
+select pub_name, fname, lname from publishers 
+left join employee on publishers.pub_id = employee.pub_id
+
+iii.
+create view stores_titles as
+select stor_name, title from stores 
+join sales on stores.stor_id = sales.stor_id
+join titles on sales.title_id = titles.title_id
+
+iv.
+create view business_titles as
+select title from titles where [type] = 'Business'
+
+b)
+select * from book_author;
+select * from editor_employees;
+select * from stores_titles;
+select * from business_titles;
+
+c)
+i.
+create view book_author as
+select title_id, (au_fname + ' ' + au_lname) as author_name from titles
+join titleauthor on titles.title_id = titleauthor.title_id
+join authors on authors.au_id = titleauthor.au_id
+
+iii.
+create view stores_titles as
+select stor_name, title_id from stores 
+join sales on stores.stor_id = sales.stor_id
+join titles on sales.title_id = titles.title_id
+
+select distinct stor_name, author_name from 
+book_author
+join 
+stores_titles
+on book_author.title_id = stores_titles.title_id
+
+d)
+i. Não porque o livro a inserir não é do tipo Business
+
+ii. select title from titles where [type] = 'popular_comp'
