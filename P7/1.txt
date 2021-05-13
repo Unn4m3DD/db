@@ -1,0 +1,17 @@
+a) Está na primeira forma normal
+
+b) Segunda forma normal:
+
+Autor(nome_autor, afiliacao_author)
+Livro(titulo_livro, nome_autor, editor, endereco_editor, tipo_livro, n_paginas, preco, ano_publicacao);
+
+
+c) Terceira forma normal:
+
+Autor(nome_autor, afiliacao_author)
+Editor(editor, endereco_editor)
+CustoLivro(tipo_Livro, n_paginas, preco)
+Livro(titulo_livro, nome_autor, editor, tipo_livro, n_paginas, ano_publicacao);
+
+Removidas dependências de chaves candidatas (FN2)
+Removidas dependências transitivas (FN3)
