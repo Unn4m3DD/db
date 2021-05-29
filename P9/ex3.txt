@@ -1,0 +1,17 @@
+Índices:
+EMPLOYEE:
+    Ssn (Clustered)
+    Dno (Non-clustered)
+    Fname + Lname (Non-clustered)
+DEPARTMENT:
+    Dnumber (Clustered)
+DEPT_LOCATIONS:
+    Dnumber (Clustered)
+PROJECT:
+    Pnumber (Clustered)
+    Dnumber (Non-Clustered)
+WORKS_ON:
+    Pno (Clustered)
+    Ssn (Non-Clustered)
+DEPENDENT:
+    Essn (Clustered)
