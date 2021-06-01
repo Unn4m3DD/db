@@ -3,4 +3,4 @@ b)
 75823ms -> Com Index
 c) 98.3 fragmentação
 d) 59443ms -> Com Identity
-e) 69406ms 
+e) 69406ms  
