@@ -3,7 +3,6 @@ GO
 CREATE TRIGGER class_10.repeated_mgr on class_10.department
 INSTEAD OF INSERT, UPDATE
 AS
-	BEGIN TRANSACTION;
     DECLARE @Dname VARCHAR(100), @Dnumber int, @Mgr_ssn int, @Mgr_start_date date;
 	DECLARE [cursor] CURSOR FOR
       SELECT * FROM inserted
@@ -20,7 +19,6 @@ AS
 		ELSE
 			BEGIN
 				RAISERROR ('Já existe um departamento com esse manager', 16,1);
-				--ROLLBACK TRANSACTION
 			END
 		FETCH NEXT FROM [cursor] INTO @Dname, @Dnumber, @Mgr_ssn, @Mgr_start_date;
 	END
