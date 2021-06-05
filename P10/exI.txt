@@ -1,0 +1,9 @@
+Abstração de regras da base de dados para unidades de separadas que podem ser reutilizadas em diversos contextos mantendo uma única fonte de código
+A diferença entre UDF e SP é que nos:
+  - SPs há possibilidade de executar varias linhas de código SQL 
+  - UDF's podem ser utilizadas como conteúdo de SPs
+
+Podem ser utilizadas UDF's para calculo de colunas que sao função das restantes:
+  - point_x, point_y -> point_norm, point_angle
+
+Podem ser utilizadas SP's para criar uma camada de abstração entre a aplicação e a base de dados escondendo o modelo de dados.
